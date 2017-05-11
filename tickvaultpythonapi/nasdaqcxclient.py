@@ -196,26 +196,4 @@ class NasdaqCxClient(BaseClient):
             The result of the query as a JSON list
         """
         return self._query_dataset("cx_eod_stats", source, tickers, start_time, end_time, fields, predicates, limit)
-                    
 
-if __name__ == "__main__":
-    nasdaq = NasdaqCxClient(user_name="bogdan.istrate@ticksmith.com", 
-                            secret_key="")
-    # <demo> --- stop ---
-    for ds in nasdaq.datasets():
-        print("\n" + ds)
-        print(nasdaq.describe(ds))
-    # <demo> --- stop ---
-    result = nasdaq.query_hits(source="CHIX", tickers="vrx", 
-                               fields="ts,askprice,bidprice,ask_size,bid_size",
-                               start_time=20170504093000, 
-                               end_time=20170504160000, 
-                               limit=1000000)
-    # <demo> --- stop ---
-    # print(result)
-    df = nasdaq.as_dataframe(result)
-    # <demo> --- stop ---
-    # sizes = df[['ask_size', 'bid_size']]
-    # sizes.figure()
-    prices = df[['askprice', 'bidprice']]
-    prices.plot()
