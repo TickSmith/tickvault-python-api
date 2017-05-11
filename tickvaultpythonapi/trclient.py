@@ -160,26 +160,4 @@ class TrClient(BaseClient):
             The result of the query as a JSON list
         """
         return self._query_dataset("md", source, tickers, start_time, end_time, fields, predicates, limit)
-                       
 
-if __name__ == "__main__":
-    thomson = TrClient(user_name="admin@ticksmith.com", 
-                       secret_key="")
-    
-    # for ds in thomson.datasets():
-    #   print("\n" + ds)
-    #   print(thomson.describe(ds))
-    
-    result = thomson.query_tas(source="NYS", tickers="IBM.N", 
-                               fields="tstamp,ric,askprice,bidprice,asksize,bidsize",
-                               start_time=20160321130000, 
-                               end_time=20160321235959, 
-                               limit=1000000)
-    
-    # print(result)
-    df = thomson.as_dataframe(result, index="tstamp")
-    print(df.info())
-    # sizes = df[['ask_size', 'bid_size']]
-    # sizes.figure()
-    prices = df[['askprice', 'bidprice']]
-    prices.plot()

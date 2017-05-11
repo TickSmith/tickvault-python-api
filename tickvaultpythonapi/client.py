@@ -29,16 +29,15 @@ Python wrapper for TickSmith Query API
 
 import requests
 import ujson
-import sys
 import pandas as pd
 from tickvaultpythonapi.parsing.predicate import Predicate
 
 
 class BaseClient(object):
 
-    def _exit_on_empty_input(self, field, value):
+    def _except_on_empty_input(self, value, field):
         if not value:
-            sys.exit("Please provide a value for the field : %s" % field)
+            raise Exception("Please provide a value for the field : %s" % field)
     
     def _str_to_list(self, field_name, to_convert):
         if isinstance(to_convert, str):
@@ -46,7 +45,7 @@ class BaseClient(object):
         elif isinstance(to_convert, list):
             return to_convert
         else:
-            sys.exit("Fields needs to be a list or a string")
+            raise Exception("Fields needs to be a list or a string")
 
     def _list_to_str(self, field_name, to_convert):    
         if isinstance(to_convert, list):
@@ -54,7 +53,7 @@ class BaseClient(object):
         elif isinstance(to_convert, str):
             return to_convert
         else:
-            sys.exit("Tickers needs to be a list or a string")
+            raise Exception("Tickers needs to be a list or a string")
     
     def get_token(self, url, user_name, secret_key):
         """
@@ -71,9 +70,9 @@ class BaseClient(object):
         """
 
         # check for empty input
-        self._exit_on_empty_input(url, "url")
-        self._exit_on_empty_input(user_name, "username")
-        self._exit_on_empty_input(secret_key, "api key")
+        self._except_on_empty_input(url, "url")
+        self._except_on_empty_input(user_name, "username")
+        self._except_on_empty_input(secret_key, "api key")
 
         endpoint = "{url}/sso/token".format(url=url)
         headers = {"Content-Type": "application/x-www-form-urlencoded",
@@ -83,14 +82,17 @@ class BaseClient(object):
         try:
             response = requests.post(endpoint, headers=headers, 
                                      data=data, auth=(user_name, secret_key))
-            # raise http errors so we can exit if they happen
+            # raise http errors so we can reraise if they happen
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
-            sys.exit(e)
+            print(e)
+            raise
         except requests.exceptions.ConnectionError as e:
-            sys.exit(e.args[0].args[0])
+            print(e.args[0].args[0])
+            raise
         except Exception as e:
-            sys.exit(e)
+            print(e)
+            raise
 
         # response.text is a JSON object, with the token in the "access_token" field
         jObj = ujson.loads(response.text)
@@ -137,18 +139,21 @@ class BaseClient(object):
 
         try:
             response = requests.get(endpoint, params=params, auth=auth)
-            # raise http errors so we can exit if they happen
+            # raise http errors so we can raise if they happen
             response.raise_for_status()
         except requests.exceptions.HTTPError as e:
-            sys.exit(e)
+            print(e)
+            raise
         except requests.exceptions.ConnectionError as e:
-            sys.exit(e.args[0].args[0])
+            print(e.args[0].args[0])
+            raise
         except Exception as e:
-            sys.exit(e)
+            print(e)
+            raise
 
-        # exit if response is empty or filled with nulls
+        # raise exception if response is empty or filled with nulls
         if not response or not str(response.text).rstrip('\x00'):
-            sys.exit("Request returned no results")
+            raise Exception("Request returned no results")
         return response.text
 
     def as_dataframe(self, in_list, index="ts"):
@@ -164,59 +169,3 @@ class BaseClient(object):
         df = pd.DataFrame(in_list).set_index(index)
         df.index = pd.DatetimeIndex(df.index)
         return df
-
-
-if __name__ == '__main__':
-
-    '''
-    # tickers = "TD,RY,YRI,AEM"
-    tickers = ["TD"]
-
-    predicates = "line_type = QA,QB and askprice >= 3"
-    # predicates = [BasePredicate("askPrice", ">=", "55.9"), BasePredicate("bidPrice", "<", "78.18")]
-
-    # fields = ["ts","line_type","ticker","price"]
-    fields = "ts,ticker,line_type,askprice,bidprice"
-
-    result = query(url="nasdaq-cx.ticksmith.com",
-          user_name="bogdan.istrate@ticksmith.com", 
-          secret_key="",
-          system="cx", dataset="cx_hits", source="CHIX", tickers=tickers,
-          start_time=20150302093000, end_time=20150302160000, fields=fields,
-          predicates=predicates, limit=10)
-
-    result = query(endpoint="https://nasdaq-cx.ticksmith.com/api/v1/dataset/query/cx/cx_hits/CHIX/td,ry/20150302093000",
-                   params={'endTime': 20150302160000, 'limit': 200, 'fields': ['ts', 'askprice', 'bidprice']},
-                   auth=OAuth(get_token("https://nasdaq-cx.ticksmith.com", 
-                                        "bogdan.istrate@ticksmith.com", 
-                                        "49e30010a8afc2aaa0d7ecb4bc58008a3e3a681901377a791ae36da2e78fac4071bbc6caed0bd62c")))
-
-    df = as_dataframe(result)
-    print(df.info())
-    print(df.describe())
-    
-    sys.exit()
-    df = df.resample('1s').mean().dropna()
-    print(df.head(20))
-    print(df.tail(20))
-    print(df.describe())
-    
-    df['ask_returns'] = np.log(df['askprice'] / df['askprice'].shift(1))
-    df['bid_returns'] = np.log(df['bidprice'] / df['bidprice'].shift(1))
-    print()
-    cols = []
-    
-    for momentum in [2, 10, 30, 60, 600]:
-        col = 'position_%s' % momentum
-        df[col] = np.sign(df['ask_returns'].rolling(momentum).mean())
-        cols.append(col)
-
-    strats = ['ask_returns']
-
-    for col in cols:
-        strat = 'strategy_%s' % col.split('_')[1]
-        df[strat] = df[col].shift(1) * df['ask_returns']
-        strats.append(strat)
-        
-    df[strats].dropna().cumsum().apply(np.exp).plot()
-    '''
