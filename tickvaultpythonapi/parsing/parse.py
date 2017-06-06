@@ -50,7 +50,7 @@ class Parser(object):
         operations = list(self.predClass.get_op_class().op_to_str.keys())
         self.operation = pp.oneOf(operations, caseless=True)('operation')
         
-        self.value = pp.Word(pp.alphanums+","+"."+"%")('value')
+        self.value = pp.Word(pp.alphanums+","+"."+"%"+"_")('value')
         self.and_ = pp.Keyword("and", caseless=True)
 
         self.pred = pp.Group(self.column + self.operation + self.value)
@@ -96,7 +96,11 @@ class Parser(object):
 if __name__ == '__main__':
     testList = [  # List of test strings
     # Valid identifiers
+<<<<<<< HEAD
     "price > 3 and volume <= 4 and ticker = TD and exchange like X", "line_type like Q", "",
+=======
+    "price > 3 and volume <= 4 and ticker = TD and exchange like X", "name=TIME_WEIGHTED_AVERAGE_SPREAD", "",
+>>>>>>> 7cb15df96ea32a0074bf8302648ea2a1144e417e
     # Not valid
     "ticker in TD,RY", "price => 3", "volume =! 4" ]
     
