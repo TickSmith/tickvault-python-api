@@ -96,11 +96,7 @@ class Parser(object):
 if __name__ == '__main__':
     testList = [  # List of test strings
     # Valid identifiers
-<<<<<<< HEAD
-    "price > 3 and volume <= 4 and ticker = TD and exchange like X", "line_type like Q", "",
-=======
     "price > 3 and volume <= 4 and ticker = TD and exchange like X", "name=TIME_WEIGHTED_AVERAGE_SPREAD", "",
->>>>>>> 7cb15df96ea32a0074bf8302648ea2a1144e417e
     # Not valid
     "ticker in TD,RY", "price => 3", "volume =! 4" ]
     
