@@ -21,7 +21,7 @@ def read(*parts):
 def main():
     setup_options = {
         "name": "tickvault-python-api",
-        "version": "1.2.2",
+        "version": "1.2.5",
         "description": "TickVault Python Query API",
         "long_description": read("README.md"),
         "author": "TickSmith Corp.",

@@ -92,8 +92,8 @@ class ItsClient(BaseClient):
             dataset -- Hits/Rollups/EOD
             source -- Exchange to query
             tickers -- One or more tickers (can be string or list)
-            start_time -- Start time of query (format: yyyymmddhhhMMss)
-            end_time -- End time of query (format: yyyymmddhhhMMss)
+            start_time -- Start time of query (format: yyyymmddhhMMss)
+            end_time -- End time of query (format: yyyymmddhhMMss)
             fields -- One or more columns to return (can be string or list)
             predicates -- String of predicates (format: "column op value [and column op value]")
             limit -- Max number of records to return (default = 200)
@@ -132,8 +132,8 @@ class ItsClient(BaseClient):
         Keyword args:
             source -- Exchange to query
             tickers -- One or more tickers (can be string or list)
-            start_time -- Start time of query (format: yyyymmddhhhMMss)
-            end_time -- End time of query (format: yyyymmddhhhMMss)
+            start_time -- Start time of query (format: yyyymmddhhMMss)
+            end_time -- End time of query (format: yyyymmddhhMMss)
             fields -- One or more columns to return (can be string or list)
             predicates -- String of predicates (format: "column op value [and column op value]")
             limit -- Max number of records to return (default = 200)
@@ -150,8 +150,8 @@ class ItsClient(BaseClient):
         Keyword args:
             source -- Exchange to query
             tickers -- One or more tickers (can be string or list)
-            start_time -- Start time of query (format: yyyymmddhhhMMss)
-            end_time -- End time of query (format: yyyymmddhhhMMss)
+            start_time -- Start time of query (format: yyyymmddhhMMss)
+            end_time -- End time of query (format: yyyymmddhhMMss)
             fields -- One or more columns to return (can be string or list)
             predicates -- String of predicates (format: "column op value [and column op value]")
             limit -- Max number of records to return (default = 200)
@@ -168,8 +168,8 @@ class ItsClient(BaseClient):
         Keyword args:
             source -- Exchange to query
             tickers -- One or more tickers (can be string or list)
-            start_time -- Start time of query (format: yyyymmddhhhMMss)
-            end_time -- End time of query (format: yyyymmddhhhMMss)
+            start_time -- Start time of query (format: yyyymmddhhMMss)
+            end_time -- End time of query (format: yyyymmddhhMMss)
             fields -- One or more columns to return (can be string or list)
             predicates -- String of predicates (format: "column op value [and column op value]")
             limit -- Max number of records to return (default = 200)
@@ -186,8 +186,8 @@ class ItsClient(BaseClient):
         Keyword args:
             source -- Exchange to query
             tickers -- One or more tickers (can be string or list)
-            start_time -- Start time of query (format: yyyymmddhhhMMss)
-            end_time -- End time of query (format: yyyymmddhhhMMss)
+            start_time -- Start time of query (format: yyyymmddhhMMss)
+            end_time -- End time of query (format: yyyymmddhhMMss)
             fields -- One or more columns to return (can be string or list)
             predicates -- String of predicates (format: "column op value [and column op value]")
             limit -- Max number of records to return (default = 200)
@@ -204,8 +204,8 @@ class ItsClient(BaseClient):
         Keyword args:
             source -- Exchange to query
             tickers -- One or more tickers (can be string or list)
-            start_time -- Start time of query (format: yyyymmddhhhMMss)
-            end_time -- End time of query (format: yyyymmddhhhMMss)
+            start_time -- Start time of query (format: yyyymmddhhMMss)
+            end_time -- End time of query (format: yyyymmddhhMMss)
             fields -- One or more columns to return (can be string or list)
             predicates -- String of predicates (format: "column op value [and column op value]")
             limit -- Max number of records to return (default = 200)
